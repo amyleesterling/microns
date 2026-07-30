@@ -1,0 +1,727 @@
+<!doctype html>
+<html lang="en">
+<head>
+<meta charset="utf-8">
+<meta name="viewport" content="width=device-width, initial-scale=1">
+<title>Cortex &middot; MICrONS renderings</title>
+<meta property="og:type" content="website">
+<meta property="og:title" content="Cortex renderings, MICrONS">
+<meta property="og:description" content="Proofread neurons from the MICrONS mouse visual cortex volume, coloured by their own depth below the pia. Lamination is not drawn on; it appears because that is where the cell bodies are.">
+<meta property="og:image" content="https://amyleesterling.github.io/ca3/images/28_cortex.jpg">
+<meta property="og:url" content="https://amyleesterling.github.io/ca3/cortex.html">
+<meta property="og:image:width" content="1200">
+<meta property="og:image:height" content="630">
+<meta name="twitter:card" content="summary_large_image">
+<meta name="twitter:title" content="Cortex renderings, MICrONS">
+<meta name="twitter:description" content="Proofread neurons from the MICrONS mouse visual cortex volume, coloured by their own depth below the pia. Lamination is not drawn on; it appears because that is where the cell bodies are.">
+<meta name="twitter:image" content="https://amyleesterling.github.io/ca3/images/28_cortex.jpg">
+<meta name="description" content="Proofread neurons from the MICrONS mouse visual cortex volume, coloured by their own depth below the pia. Lamination is not drawn on; it appears because that is where the cell bodies are.">
+<link rel="icon" href="favicon.ico" sizes="any">
+<link rel="icon" type="image/png" sizes="32x32" href="favicon-32.png">
+<link rel="apple-touch-icon" href="apple-touch-icon.png">
+<style>
+  :root {
+    --ink: #EFF2F7; --dim: #9AA2B1; --faint: #666E7C;
+    --ground: #07080B; --panel: #0F1218; --line: #1D222B;
+    --edge: #4A5568; --accent: #3E96F0;
+  }
+  * { box-sizing: border-box; }
+  body {
+    margin: 0; background: var(--ground); color: var(--ink);
+    font: 400 17px/1.7 ui-sans-serif, -apple-system, "Segoe UI", Roboto, sans-serif;
+    -webkit-text-size-adjust: 100%;
+  }
+  .wrap { max-width: 800px; margin: 0 auto; padding: clamp(20px,5vw,44px) clamp(16px,5vw,32px) 80px; }
+  h1 { margin: 0 0 6px; font-size: clamp(24px,6vw,34px); font-weight: 500; letter-spacing: -.015em; text-wrap: balance; }
+  .lede { margin: 0 0 22px; color: var(--dim); font-size: 16px; }
+  .cite {
+    margin: 0 0 40px; padding: 16px 18px; background: var(--panel);
+    border-radius: 10px; font-size: 14.5px; color: var(--dim); line-height: 1.6;
+  }
+  .cite a { color: var(--accent); text-decoration: none; }
+  .cite a:hover { text-decoration: underline; }
+  .cite .t { color: var(--ink); display: block; margin-bottom: 6px; }
+  h2 {
+    margin: 44px 0 10px; font-size: 13px; font-weight: 500; letter-spacing: .12em;
+    text-transform: uppercase; color: var(--faint);
+  }
+  h3 { margin: 26px 0 4px; font-size: 18px; font-weight: 500; }
+  p { margin: 0 0 14px; }
+  figure { margin: 0 0 4px; }
+  /* The banner sits outside the text column, so it needs no viewport-unit
+     breakout and picks up no scrollbar offset. It is NOT cropped: the whole
+     render sits on the page's own black. */
+  /* The black IS the page. The render sits centred in it, whole, and the panel
+     takes only the top slice. A 2.36:1 image is inherently short, so the figure
+     is given height and the image is centred inside it rather than stretched. */
+  figure.hero {
+    margin: 0 0 10px; position: relative;
+    min-height: min(84vh, 780px);
+    display: flex; align-items: center;
+    background: var(--ground);
+  }
+  figure.hero img {
+    border: 0; border-radius: 0; width: 100%; height: auto; display: block;
+  }
+
+  /* ---- the floating screen ------------------------------------------------
+     A window hovering in front of the render, not a bar welded to the top. It
+     has edges on all four sides, it lifts off the image with a shadow, and its
+     top edge is lit as though the surface were emitting. */
+  .heropanel {
+    position: absolute; z-index: 3;
+    top: clamp(16px, 4.2vw, 46px);
+    left: 50%; transform: translateX(-50%);
+    width: min(680px, calc(100% - 40px));
+    background:
+      linear-gradient(178deg, rgba(13,26,45,.80), rgba(7,14,26,.86) 62%, rgba(6,12,22,.90));
+    border: 1px solid rgba(122,186,246,.26);
+    border-radius: 3px;
+    backdrop-filter: blur(9px) saturate(1.15);
+    -webkit-backdrop-filter: blur(9px) saturate(1.15);
+    box-shadow:
+      0 0 0 1px rgba(6,12,22,.55),
+      0 18px 54px rgba(0,0,0,.62),
+      0 0 40px rgba(62,150,240,.10);
+  }
+  /* the lit upper edge, brightest at the centre, the way an emitting surface reads */
+  .heropanel::before {
+    content: ""; position: absolute; left: 9%; right: 9%; top: -1px; height: 1px;
+    background: linear-gradient(90deg, transparent,
+      rgba(150,212,255,.85) 22%, rgba(214,240,255,1) 50%,
+      rgba(150,212,255,.85) 78%, transparent);
+    box-shadow: 0 0 11px rgba(120,196,255,.62);
+  }
+  /* scanlines, faint enough that you feel them rather than see them */
+  .heropanel::after {
+    content: ""; position: absolute; inset: 0; pointer-events: none;
+    border-radius: 3px;
+    background-image: repeating-linear-gradient(0deg,
+      rgba(158,210,255,.035) 0 1px, transparent 1px 3px);
+  }
+  .heropanel .inner {
+    position: relative; z-index: 1;
+    padding: clamp(20px,2.9vw,30px) clamp(20px,3.2vw,34px) clamp(18px,2.6vw,26px);
+  }
+  /* corner ticks: two hairlines each, inset, so the frame reads as machined */
+  .heropanel i {
+    position: absolute; width: 11px; height: 11px; pointer-events: none;
+    border: 0 solid rgba(150,208,252,.55);
+  }
+  .heropanel i.tl { top: 6px; left: 6px; border-top-width: 1px; border-left-width: 1px; }
+  .heropanel i.tr { top: 6px; right: 6px; border-top-width: 1px; border-right-width: 1px; }
+  .heropanel i.bl { bottom: 6px; left: 6px; border-bottom-width: 1px; border-left-width: 1px; }
+  .heropanel i.br { bottom: 6px; right: 6px; border-bottom-width: 1px; border-right-width: 1px; }
+
+  /* the eyebrow line: a live dot, a label, and a rail that runs out to the edge */
+  .heroeyebrow {
+    display: flex; align-items: center; gap: 9px;
+    margin: 0 0 13px; font-size: 9.5px; letter-spacing: .2em;
+    text-transform: uppercase; color: rgba(140,190,240,.9);
+  }
+  .heroeyebrow s {
+    width: 5px; height: 5px; border-radius: 50%; flex: 0 0 auto;
+    background: rgb(120,205,255); box-shadow: 0 0 8px rgba(120,205,255,.9);
+    text-decoration: none;
+  }
+  .heroeyebrow u {
+    flex: 1 1 auto; height: 5px; text-decoration: none;
+    background-image: repeating-linear-gradient(90deg,
+      rgba(140,196,246,.42) 0 1px, transparent 1px 7px);
+  }
+  .heropanel h1 {
+    margin: 0; font-size: clamp(26px,4.4vw,38px); font-weight: 500;
+    letter-spacing: -.02em; line-height: 1.08;
+  }
+  .heropanel .lede {
+    margin: 9px 0 0; font-size: 15px; line-height: 1.62;
+    color: #A7BCD6; max-width: 46ch;
+  }
+  .heropanel .rule {
+    height: 1px; margin: 17px 0 0;
+    background: linear-gradient(90deg, rgba(122,186,246,.34), rgba(122,186,246,.05) 72%, transparent);
+  }
+  .heropanel .meta {
+    margin: 12px 0 0; font-size: 11.5px; letter-spacing: .1em;
+    text-transform: uppercase; color: rgba(126,146,172,.95);
+    display: flex; flex-wrap: wrap; gap: 4px 16px;
+  }
+  .heropanel .meta b { color: #CBD8E8; font-weight: 500; letter-spacing: .06em; }
+
+  @media (max-width: 620px) {
+    /* figure.hero is a centring flex box on desktop. Left as flex here, the now
+       static panel becomes a ROW sibling and lands outside the viewport, measured
+       at x=389 in a 375px window, while min-height leaves a 780px empty box with
+       the banner floating in the middle of it. Block flow fixes both. */
+    figure.hero { display: block; min-height: 0; padding-top: 0; }
+    /* negative TOP margin, because the panel follows the image in the DOM: this
+       lifts it onto the foot of the banner. A negative bottom margin, which is
+       what was here before, would instead have dragged the citation up under it. */
+    .heropanel { position: static; transform: none; width: auto;
+                  margin: -34px 14px 26px; border-radius: 3px; }
+  }
+  figure.hero figcaption {
+    font-size: 15px; max-width: 800px;
+    margin: 10px auto 0; padding: 0 clamp(16px,5vw,32px);
+  }
+  /* The cell sits directly on the page with no frame. Its content runs corner
+     to corner on a diagonal, which leaves the top right and bottom left empty,
+     so the readouts go there. Below 760px they stop overlapping and stack. */
+  .cellstage { position: relative; margin: 30px 0 44px; }
+  .cellstage img {
+    display: block; width: 100%; height: auto;
+    border: 0; border-radius: 0; background: transparent;
+  }
+  .holo {
+    background: linear-gradient(158deg, rgba(18,30,52,.86), rgba(9,14,26,.74));
+    border: 1px solid rgba(88,148,238,.34); border-radius: 3px;
+    padding: 13px 15px 12px; max-width: 268px;
+    box-shadow: 0 0 22px rgba(0,0,0,.55);
+  }
+  .holo .k {
+    font-size: 10px; letter-spacing: .19em; text-transform: uppercase;
+    color: #6BA4E6; margin: 0 0 5px;
+  }
+  .holo .v {
+    font-size: 27px; font-weight: 500; line-height: 1.05; margin: 0;
+    font-variant-numeric: tabular-nums; color: #EFF4FB;
+  }
+  .holo .d { font-size: 12.5px; color: #93A3BC; margin: 5px 0 0; line-height: 1.5; }
+  .holo + .holo { margin-top: 10px; }
+  @media (min-width: 760px) {
+    .holo-tr { position: absolute; top: 1%; right: 0; }
+    .holo-bl { position: absolute; bottom: 3%; left: 0; }
+  }
+  @media (max-width: 759px) {
+    .holo { max-width: none; margin-top: 10px; }
+    .holo-tr { margin-bottom: 10px; }
+  }
+
+  /* Gallery: one column on a phone, two once there is room. */
+  .gal { display: grid; gap: 22px; margin-top: 6px; }
+  @media (min-width: 620px) { .gal { grid-template-columns: 1fr 1fr; } }
+  .gal figure { margin: 0; }
+  .gal a { display: block; }
+  .gal img { border-radius: 8px; border: 0; }
+  .gal figcaption { font-size: 13px; line-height: 1.55; margin-top: 7px; }
+  .gal .wide { grid-column: 1 / -1; }
+  .gal video { border-radius: 8px; border: 0; }
+  .gal .tall { max-width: 340px; }
+
+  video {
+    display: block; width: 100%; height: auto; border-radius: 10px;
+    border: 0; background: #000;
+  }
+  .vidwrap { max-width: 420px; margin: 0 auto; }
+  /* the 420px cap frames a phone-shaped cut; a widescreen one needs the room */
+  .vidwrap.is-wide { max-width: 100%; }
+  .vidfull { max-width: 100%; margin: 0 auto; }
+  figure.badge { max-width: 380px; margin: 0 auto 10px; }
+  img {
+    display: block; width: 100%; height: auto; border-radius: 10px;
+    border: 0; background: #000;
+  }
+  figcaption { margin-top: 8px; color: var(--dim); font-size: 14px; }
+  table { width: 100%; border-collapse: collapse; margin: 14px 0 0; font-size: 15px; }
+  th { text-align: left; font-weight: 500; color: var(--faint); font-size: 12px;
+        letter-spacing: .08em; text-transform: uppercase; padding: 0 0 8px; }
+  td { padding: 8px 0; border-top: 1px solid var(--line); font-variant-numeric: tabular-nums; }
+  td:last-child, th:last-child { text-align: right; }
+  .note {
+    margin: 14px 0 0; padding: 13px 16px; background: var(--panel);
+    border-left: 3px solid var(--accent); border-radius: 0 8px 8px 0;
+    color: var(--dim); font-size: 15px;
+  }
+  .note b, .cap b { color: var(--ink); font-weight: 500; }
+  footer { margin-top: 56px; padding-top: 20px; border-top: 1px solid var(--line);
+            color: var(--faint); font-size: 14px; }
+  footer a { color: var(--accent); text-decoration: none; }
+
+  /* ---- hologram UI ---------------------------------------------------------
+     Every piece of media sits in a frame that reads like an instrument readout:
+     corner brackets draw in, a scan line passes once, and a cyan rim lifts it off
+     the page. Transform and opacity only, so none of it costs layout. */
+  .holoframe { position: relative; isolation: isolate; margin: 26px 0; }
+  .holoframe img, .holoframe video {
+    transition: filter .5s ease, transform .55s cubic-bezier(.22,.9,.28,1);
+    will-change: transform;
+  }
+  .holoframe:hover img, .holoframe:hover video,
+  .holoframe:focus-within img, .holoframe:focus-within video {
+    transform: translateY(-3px) scale(1.006);
+  }
+  .holoframe:hover img, .holoframe:hover video {
+    filter: brightness(1.03) saturate(1.03)
+            drop-shadow(0 6px 18px rgba(0,0,0,.45))
+            drop-shadow(0 0 12px rgba(62,150,240,.14));
+  }
+
+  /* section headings get a readout tick that extends on hover */
+  h2 { position: relative; padding-left: 16px; }
+  h2::before {
+    content: ""; position: absolute; left: 0; top: 50%; width: 8px; height: 1px;
+    background: var(--accent); opacity: .65;
+    transform: translateY(-50%); transition: width .35s ease, opacity .35s ease;
+  }
+  h2:hover::before { width: 13px; opacity: 1; }
+
+  /* the readouts on the full bleed cell pick up the same idle shimmer */
+  .holo { transition: border-color .4s ease, box-shadow .4s ease, transform .4s ease; }
+  .holo:hover {
+    border-color: rgba(120,190,255,.75); transform: translateY(-2px);
+    box-shadow: 0 0 26px rgba(0,0,0,.6), 0 0 22px rgba(62,150,240,.18);
+  }
+
+
+  /* the particle trace draws itself on a canvas; see the script at the foot */
+  .holoframe canvas.trace {
+    position: absolute; inset: -22px; width: calc(100% + 44px);
+    height: calc(100% + 44px); z-index: 3; pointer-events: none;
+  }
+
+  /* the play affordance. The native control is small and lands on top of the
+     colour key burned into some of these clips, so the frame carries its own. */
+  .playbadge {
+    position: absolute; left: 50%; top: 50%; z-index: 5;
+    transform: translate(-50%,-50%); width: 74px; height: 74px;
+    border-radius: 50%; cursor: pointer; padding: 0;
+    border: 2px solid rgba(150,215,255,.85);
+    background: radial-gradient(circle at 50% 50%,
+      rgba(20,45,80,.72), rgba(8,16,30,.62));
+    box-shadow: 0 0 0 6px rgba(62,150,240,.10), 0 0 26px rgba(62,150,240,.35);
+    transition: transform .25s ease, box-shadow .25s ease,
+                opacity .25s ease, border-color .25s ease;
+  }
+  .playbadge::before {
+    content: ""; position: absolute; left: 52%; top: 50%;
+    transform: translate(-50%,-50%);
+    border-left: 20px solid rgba(226,244,255,.96);
+    border-top: 13px solid transparent; border-bottom: 13px solid transparent;
+  }
+  .playbadge:hover {
+    transform: translate(-50%,-50%) scale(1.07);
+    border-color: rgba(190,235,255,1);
+    box-shadow: 0 0 0 8px rgba(62,150,240,.14), 0 0 34px rgba(62,150,240,.55);
+  }
+  .playbadge:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .holoframe.playing .playbadge { opacity: 0; pointer-events: none; }
+
+  /* the play affordance. The native control is small and lands on top of the
+     colour key burned into some of these clips, so the frame carries its own. */
+  .playbadge {
+    position: absolute; left: 50%; top: 50%; z-index: 4;
+    transform: translate(-50%,-50%); width: 74px; height: 74px;
+    border-radius: 50%; cursor: pointer; padding: 0;
+    border: 2px solid rgba(150,215,255,.85);
+    background: radial-gradient(circle at 50% 50%,
+      rgba(20,45,80,.72), rgba(8,16,30,.62));
+    box-shadow: 0 0 0 6px rgba(62,150,240,.10), 0 0 26px rgba(62,150,240,.35);
+    transition: transform .25s ease, box-shadow .25s ease,
+                opacity .25s ease, border-color .25s ease;
+  }
+  .playbadge::before {
+    content: ""; position: absolute; left: 52%; top: 50%;
+    transform: translate(-50%,-50%);
+    border-left: 20px solid rgba(226,244,255,.96);
+    border-top: 13px solid transparent; border-bottom: 13px solid transparent;
+  }
+  .playbadge:hover {
+    transform: translate(-50%,-50%) scale(1.07);
+    border-color: rgba(190,235,255,1);
+    box-shadow: 0 0 0 8px rgba(62,150,240,.14), 0 0 34px rgba(62,150,240,.55);
+  }
+  .playbadge:focus-visible { outline: 2px solid var(--accent); outline-offset: 4px; }
+  .holoframe.playing .playbadge { opacity: 0; pointer-events: none; }
+
+  /* the study at a glance, in the same readout language as the cell panels */
+
+  /* ---- HUD annotation ------------------------------------------------------
+     Hairlines and small readouts, in the language of a targeting overlay. Every
+     value shown is real: media dimensions and duration are read off the element,
+     and the science figures come from measurements on the page. */
+  .hud {
+    position: absolute; inset: -1px; z-index: 4; pointer-events: none;
+    opacity: 0; transition: opacity .34s ease;
+  }
+  .holoframe:hover .hud, .holoframe:focus-within .hud { opacity: 1; }
+  .hud i {
+    position: absolute; width: 13px; height: 13px;
+    border: 1px solid rgba(196,228,255,.5);
+    transition: transform .42s cubic-bezier(.2,.8,.25,1);
+  }
+  .hud i.tl { top: 0; left: 0; border-right: 0; border-bottom: 0; transform: translate(4px,4px); }
+  .hud i.tr { top: 0; right: 0; border-left: 0; border-bottom: 0; transform: translate(-4px,4px); }
+  .hud i.bl { bottom: 0; left: 0; border-right: 0; border-top: 0; transform: translate(4px,-4px); }
+  .hud i.br { bottom: 0; right: 0; border-left: 0; border-top: 0; transform: translate(-4px,-4px); }
+  .holoframe:hover .hud i.tl { transform: translate(-7px,-7px); }
+  .holoframe:hover .hud i.tr { transform: translate(7px,-7px); }
+  .holoframe:hover .hud i.bl { transform: translate(-7px,7px); }
+  .holoframe:hover .hud i.br { transform: translate(7px,7px); }
+
+  .hud b {
+    position: absolute; font-weight: 500; font-size: 9.5px; letter-spacing: .17em;
+    text-transform: uppercase; color: rgba(190,222,252,.82);
+    font-variant-numeric: tabular-nums; white-space: nowrap;
+    text-shadow: 0 1px 6px rgba(0,0,0,.8);
+  }
+  .hud b.a { top: 9px; left: 22px; }
+  .hud b.b { top: 9px; right: 22px; color: rgba(232,169,58,.9); }
+  .hud b.c { bottom: 9px; left: 22px; }
+  /* no hover on touch, and the canvas overhang would push past the viewport */
+  @media (max-width: 700px), (hover: none) {
+    .hud { display: none; }
+    .holoframe canvas.trace { display: none; }
+    .holoframe { margin: 10px 0; }
+  }
+  @media (prefers-reduced-motion: reduce) {
+    .hud, .hud i { transition: none; }
+  }
+
+  .stats {
+    display: grid; gap: 10px; margin: 0 0 30px;
+    grid-template-columns: repeat(2, 1fr);
+  }
+  @media (min-width: 620px) { .stats { grid-template-columns: repeat(5, 1fr); } }
+  .stat {
+    background: linear-gradient(158deg, rgba(18,30,52,.72), rgba(9,14,26,.55));
+    border: 1px solid rgba(88,148,238,.26); border-radius: 4px;
+    padding: 11px 12px 10px;
+  }
+  .stat .v {
+    font-size: clamp(19px,3.4vw,25px); font-weight: 500; line-height: 1.05;
+    color: #EFF4FB; font-variant-numeric: tabular-nums;
+  }
+  .stat .k {
+    font-size: 9.5px; letter-spacing: .16em; text-transform: uppercase;
+    color: #6BA4E6; margin-top: 6px; line-height: 1.4;
+  }
+  .stats .span2 { grid-column: span 2; }
+  .volfig { margin: 26px 0 10px; }
+  .volfig img { border: 0; border-radius: 0; background: transparent; }
+
+  @media (prefers-reduced-motion: reduce) {
+        .holoframe img, .holoframe video, .holo, h2::before { transition: none; }
+    .holoframe:hover img, .holoframe:hover video { transform: none; }
+    .playbadge { transition: none; }
+    .holoframe canvas.trace { display: none; }
+  }
+
+</style>
+</head>
+<body>
+
+<figure class="hero">
+  <img src="images/28_cortex.jpg" alt="Proofread neurons from the MICrONS mouse visual cortex volume, coloured by depth below the pia, gold at the surface through violet to deep blue">
+  <div class="heropanel">
+    <i class="tl"></i><i class="tr"></i><i class="bl"></i><i class="br"></i>
+    <div class="inner">
+      <p class="heroeyebrow"><s></s>microns mouse visual cortex<u></u>a second dataset</p>
+      <h1>Cortex</h1>
+      <p class="lede">The same measured geometry, a different piece of brain. These are
+      proofread neurons from the MICrONS volume, coloured by how deep they sit.</p>
+      <div class="rule"></div>
+      <p class="meta"><span><b>38</b> cells</span><span><b>481</b> &micro;m of cortex</span><span><b>34</b> located somata</span></p>
+    </div>
+  </div>
+</figure>
+
+<div class="wrap">
+
+  <h2>A core through cortex</h2>
+  <p>Every fully proofread neuron I hold from the MICrONS mouse visual cortex volume,
+  38 of them, seen side on with the pia at the top. Colour is not a property of
+  the cell. It is position: every point on every arbor is tinted by its own depth
+  below the surface, so one pyramidal neuron reads gold where its apical tuft reaches
+  layer 1 and blue where its soma and basal dendrites sit deep. Nothing draws the
+  layers in. They appear because that is where the cell bodies are.</p>
+
+  <figure data-hud="429 to 910 &micro;m deep">
+    <img src="images/28_cortex.jpg" alt="MICrONS cortical neurons coloured continuously by depth below the pia">
+    <figcaption>The bright points are <b>real somata</b>, not estimates. Cell body
+    positions come from the CAVE nucleus table rather than from the meshes, because a
+    mesh centroid is noise inside a soma and the true coordinates are on record. The
+    34 located cell bodies span <b>429 to 910 &micro;m</b> below the pia with a
+    median of <b>630</b>, which is layer 2/3 through layer 6.</figcaption>
+  </figure>
+
+  <div class="note">This uses the same three colour stops as the CA3 convergence
+  gradient, reversed. There the ramp encoded a measured quantity, how many mossy
+  fibers reach a cell. Here it encodes position in tissue. Same visual language, two
+  different kinds of fact, and it is worth saying which is which.</div>
+
+  <h2>What is honest about this picture</h2>
+  <p>These cells were chosen because they are <b>proofread</b>, not because they are a
+  sample of anything. A neuron earns that status by a person checking it, so this is a
+  picture of 38 well traced cells, not of a cortical column. Real cortex at this
+  depth holds tens of thousands of neurons in the same space.</p>
+  <p>Nine of the mesh identifiers had gone stale since they were downloaded, because
+  proofreading keeps merging and splitting segments, and were resolved forward through
+  the chunked graph before the somata were looked up. Four cells have no nucleus in the
+  table and carry no soma marker.</p>
+
+  <div class="cite" style="margin-top:26px">
+    <span class="t">MICrONS, mouse visual cortex</span>
+    Data from the MICrONS Consortium, served through
+    <a href="https://www.microns-explorer.org">microns-explorer.org</a>.
+    Meshes and soma positions queried from CAVE, datastack
+    <code>minnie65_phase3_v1</code>.
+    <br><a href="https://amyleesterling.github.io/ca3/">Back to the CA3 renderings</a>
+  </div>
+
+</div>
+
+<script>
+(function () {
+  // Readouts are pulled off the media itself, so they cannot drift out of date.
+  // A figure may add data-hud for a measured science value; nothing is invented.
+  function fmt(n) { return n.toLocaleString("en-US"); }
+  document.querySelectorAll(".holoframe").forEach(function (f) {
+    var m = f.querySelector("video, img");
+    if (!m) return;
+    var hud = document.createElement("div");
+    hud.className = "hud";
+    hud.innerHTML = '<i class="tl"></i><i class="tr"></i><i class="bl"></i>' +
+                    '<i class="br"></i>' +
+                    '<b class="a"></b><b class="b"></b><b class="c"></b>';
+    f.appendChild(hud);
+    var A = hud.querySelector("b.a"), B = hud.querySelector("b.b"),
+        C = hud.querySelector("b.c");
+
+    var fig = f.closest("figure");
+    if (fig && fig.dataset.hud) C.textContent = fig.dataset.hud;
+
+    function fill() {
+      if (m.tagName === "VIDEO") {
+        if (m.videoWidth) A.textContent = m.videoWidth + " × " + m.videoHeight;
+        if (m.duration && isFinite(m.duration)) {
+          B.textContent = m.duration.toFixed(1) + " s · " +
+                          Math.round(m.duration * 24) + " frames";
+        }
+      } else if (m.naturalWidth) {
+        A.textContent = fmt(m.naturalWidth) + " × " + fmt(m.naturalHeight);
+        B.textContent = "still";
+      }
+    }
+    fill();
+    if (m.tagName === "VIDEO") {
+      m.addEventListener("loadedmetadata", fill);
+      // metadata only loads on demand, so ask for it the first time it is needed
+      f.addEventListener("mouseenter", function () {
+        if (!m.videoWidth && m.preload !== "auto") { try { m.load(); } catch (e) {} }
+      });
+    } else {
+      m.addEventListener("load", fill);
+    }
+  });
+})();
+</script><script>
+(function () {
+  if (matchMedia("(prefers-reduced-motion: reduce)").matches) return;
+  var PAD = 26, N = 64, DUR = 1500, R = 15;
+
+  // a point at fraction t around a rounded rectangle
+  function ring(t, w, h, r) {
+    var sw = w - 2 * r, sh = h - 2 * r;
+    var arc = Math.PI * r / 2, per = 2 * sw + 2 * sh + 4 * arc;
+    var d = ((t % 1) + 1) % 1 * per;
+    if (d < sw) return [r + d, 0];
+    d -= sw;
+    if (d < arc) { var a = d / arc * 1.5708; return [w - r + r * Math.sin(a), r - r * Math.cos(a)]; }
+    d -= arc;
+    if (d < sh) return [w, r + d];
+    d -= sh;
+    if (d < arc) { var b = d / arc * 1.5708; return [w - r + r * Math.cos(b), h - r + r * Math.sin(b)]; }
+    d -= arc;
+    if (d < sw) return [w - r - d, h];
+    d -= sw;
+    if (d < arc) { var c = d / arc * 1.5708; return [r - r * Math.sin(c), h - r + r * Math.cos(c)]; }
+    d -= arc;
+    if (d < sh) return [0, h - r - d];
+    d -= sh;
+    var e = (d - 0) / arc * 1.5708;
+    return [r - r * Math.cos(e), r - r * Math.sin(e)];
+  }
+
+  // a small branching tree, three levels, for the decay to run along
+  function branches(x, y, ang) {
+    var segs = [];
+    (function grow(px, py, a, len, depth) {
+      var nx = px + Math.cos(a) * len, ny = py + Math.sin(a) * len;
+      segs.push([px, py, nx, ny, depth]);
+      if (depth >= 4) return;
+      var spread = 0.36 + Math.random() * 0.34;
+      grow(nx, ny, a - spread, len * 0.62, depth + 1);
+      grow(nx, ny, a + spread, len * 0.62, depth + 1);
+    })(x, y, ang, 13, 0);
+    return segs;
+  }
+
+  document.querySelectorAll(".holoframe").forEach(function (frame) {
+    var cv = frame.querySelector("canvas.trace");
+    if (!cv) return;
+    var ctx = cv.getContext("2d"), P = [], raf = 0, t0 = 0, w = 0, h = 0,
+        dpr = 1, tree = null, startT = 0;
+
+    function size() {
+      var r = frame.getBoundingClientRect();
+      if (!r.width) return false;
+      dpr = Math.min(devicePixelRatio || 1, 2);
+      w = r.width + PAD * 2; h = r.height + PAD * 2;
+      cv.width = w * dpr; cv.height = h * dpr;
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+      return true;
+    }
+
+    function seed() {
+      var s0 = ring(0, w - 2, h - 2, R);
+      P = [];
+      for (var i = 0; i < N; i++) {
+        var a = Math.random() * 6.283, rad = 20 + Math.random() * 60;
+        P.push({
+          x: s0[0] + 1 + Math.cos(a) * rad, y: s0[1] + 1 + Math.sin(a) * rad,
+          vx: 0, vy: 0, r: 0.8 + Math.random() * 1.2,
+          jx: (Math.random() - 0.5) * 7, jy: (Math.random() - 0.5) * 7,
+          seg: 0, u: Math.random(), sp: 0.6 + Math.random() * 0.9
+        });
+      }
+      tree = null;
+    }
+
+    function draw(now) {
+      var k = (now - t0) / DUR;
+      if (k >= 1) { stop(); return; }
+
+      ctx.globalCompositeOperation = "destination-out";
+      ctx.fillStyle = "rgba(0,0,0,0.22)";
+      ctx.fillRect(0, 0, w, h);
+      ctx.globalCompositeOperation = "lighter";
+
+      var SWEEP_END = 0.60;
+
+      if (k < SWEEP_END) {
+        // phase two: they ARE the beam. Nothing else is drawn.
+        var q = k / SWEEP_END;
+        var head = q * q * (3 - 2 * q), TAIL = 0.11, SEG = 44;
+        // stroked as a thin line, not a row of discs. Two passes: a soft wide
+        // glow first, then a 1.3px core over it, so it reads as a beam.
+        ctx.lineCap = "round";
+        ctx.lineJoin = "round";
+        for (var pass = 0; pass < 2; pass++) {
+          ctx.lineWidth = pass ? 1.0 : 4.0;
+          for (var j = 0; j < SEG; j++) {
+            var f1 = j / SEG, f2 = (j + 1) / SEG;
+            var t1 = head - f1 * TAIL, t2 = head - f2 * TAIL;
+            if (t2 < 0) break;
+            var a1 = ring(startT + t1, w - 2, h - 2, R),
+                a2 = ring(startT + t2, w - 2, h - 2, R);
+            var fade = (1 - f1) * (1 - f1);
+            ctx.beginPath();
+            ctx.moveTo(a1[0] + 1, a1[1] + 1);
+            ctx.lineTo(a2[0] + 1, a2[1] + 1);
+            ctx.globalCompositeOperation = pass ? "source-over" : "lighter";
+            ctx.strokeStyle = pass
+              ? "rgba(178,216,248," + (fade * 0.46).toFixed(3) + ")"
+              : "rgba(74,150,224," + (fade * 0.07).toFixed(3) + ")";
+            ctx.stroke();
+          }
+        }
+      } else {
+        // phase three: the beam breaks up and decays along a branching tree
+        if (!tree) {
+          var e0 = ring(startT + 1, w - 2, h - 2, R);
+          var out = Math.atan2(e0[1] + 1 - h / 2, e0[0] + 1 - w / 2);
+          tree = [];
+          for (var b0 = 0; b0 < 3; b0++) {
+            tree = tree.concat(branches(e0[0] + 1, e0[1] + 1,
+              out + (b0 - 1) * 0.75 + (Math.random() - 0.5) * 0.3));
+          }
+          for (var m = 0; m < P.length; m++) {
+            P[m].seg = (Math.random() * tree.length) | 0;
+            P[m].u = Math.random() * 0.3;
+          }
+        }
+        var d3 = (k - SWEEP_END) / (1 - SWEEP_END);
+        for (var n = 0; n < P.length; n++) {
+          var q2 = P[n], sg = tree[q2.seg];
+          q2.u = Math.min(1, q2.u + 0.028 * q2.sp);
+          var x = sg[0] + (sg[2] - sg[0]) * q2.u;
+          var y = sg[1] + (sg[3] - sg[1]) * q2.u;
+          var al = (1 - d3) * (1 - d3) * (0.34 - sg[4] * 0.06);
+          ctx.beginPath();
+          ctx.arc(x, y, 0.95 - sg[4] * 0.15, 0, 6.283);
+          ctx.fillStyle = "rgba(140,198,244," + Math.max(0, al).toFixed(3) + ")";
+          ctx.fill();
+        }
+      }
+      raf = requestAnimationFrame(draw);
+    }
+
+    function stop() {
+      cancelAnimationFrame(raf); raf = 0;
+      ctx.setTransform(1, 0, 0, 1, 0, 0);
+      ctx.clearRect(0, 0, cv.width, cv.height);
+      ctx.setTransform(dpr, 0, 0, dpr, 0, 0);
+    }
+
+    function start(ev) {
+      if (raf) return;
+      if (!size()) return;
+      // walk the boundary and take the closest point to where the pointer
+      // crossed, so the light is struck where the cursor entered
+      startT = 0;
+      if (ev && ev.clientX !== undefined) {
+        var r = frame.getBoundingClientRect();
+        var mx = ev.clientX - r.left + PAD, my = ev.clientY - r.top + PAD;
+        var best = 1e9;
+        for (var i = 0; i < 240; i++) {
+          var tt = i / 240, p = ring(tt, w - 2, h - 2, R);
+          var dx = p[0] + 1 - mx, dy = p[1] + 1 - my, d2 = dx * dx + dy * dy;
+          if (d2 < best) { best = d2; startT = tt; }
+        }
+      }
+      seed();
+      t0 = performance.now();
+      raf = requestAnimationFrame(draw);
+    }
+
+    frame.addEventListener("mouseenter", start);
+    frame.addEventListener("focusin", start);
+  });
+})();
+</script><script>
+(function () {
+  document.querySelectorAll(".holoframe").forEach(function (f) {
+    var v = f.querySelector("video");
+    if (!v) return;
+    var b = document.createElement("button");
+    b.className = "playbadge";
+    b.type = "button";
+    b.setAttribute("aria-label", "Play");
+    b.addEventListener("click", function () { v.play(); });
+    f.appendChild(b);
+    var sync = function () { f.classList.toggle("playing", !v.paused && !v.ended); };
+    ["play", "pause", "ended"].forEach(function (e) { v.addEventListener(e, sync); });
+    sync();
+  });
+})();
+</script><script>
+(function () {
+  // Vertical is the markup default, so a phone never starts fetching the wide
+  // file. Anything with room swaps to the widescreen master and lets the
+  // wrapper grow, since the 420px cap only makes sense for a phone framing.
+  if (!window.matchMedia || !matchMedia("(min-width: 760px)").matches) return;
+  var vids = document.querySelectorAll("video[data-wide]");
+  for (var i = 0; i < vids.length; i++) {
+    var v = vids[i], src = v.querySelector("source");
+    if (!src) continue;
+    src.src = v.getAttribute("data-wide");
+    var poster = v.getAttribute("data-wide-poster");
+    if (poster) v.poster = poster;
+    var wrap = v.closest(".vidwrap");
+    if (wrap) wrap.classList.add("is-wide");
+    v.load();
+  }
+})();
+</script>
+</body>
+</html>
