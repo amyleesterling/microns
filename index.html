@@ -440,45 +440,41 @@
     --holo-line: 196 228 255;
   }
 
-  /* the depth ladder, in the left gutter beside the centred panel.
-     Below 900px the gutter is narrower than the ladder, so it goes. The panel
-     keeps the histogram and the provenance line, which is the same data. */
+  /* The depth ladder, in the left gutter beside the centred panel. Its top and
+     height are set from the image's own box by script, so the rail spans
+     exactly what the picture spans and a depth on the ladder is at the same
+     height as that depth in the render. Below 900px the gutter is narrower
+     than the ladder, so it goes. */
   .mhud-axis { display: none; }
   @media (min-width: 900px) and (hover: hover) {
     .mhud-axis {
       display: block; position: absolute; z-index: 3;
-      left: clamp(14px, 2vw, 30px); bottom: 7%;
-      height: min(52%, 400px); width: 66px;
+      left: clamp(14px, 2vw, 30px); top: 0; height: 100%; width: 96px;
       opacity: 0; animation: mhud-fade 900ms 260ms ease both;
     }
   }
   @keyframes mhud-fade { from { opacity: 0; } to { opacity: 1; } }
+  /* The label runs down the far side rather than sitting on top of the rail.
+     A horizontal caption at the head of a full height ladder crosses the rail,
+     the ticks and the marks, and there is no room in a 96px column to put it
+     beside them. */
   .mhud-axis-cap {
-    position: absolute; top: -34px; left: 0; width: 120px;
+    position: absolute; right: 0; top: 0; width: 14px;
+    writing-mode: vertical-rl; text-orientation: mixed;
     font-size: 8.5px; letter-spacing: .18em; text-transform: uppercase;
-    color: rgba(140,190,240,.78); line-height: 1.5;
+    color: rgba(140,190,240,.7); line-height: 1;
   }
-  .mhud-axis-cap .mhud-u {
-    display: block; letter-spacing: .1em; color: rgba(112,132,158,.9);
-  }
-  /* the rail itself. 0 at the pia to 1100 um, so a mark's height on the rail
-     means the same thing as a cell's height in the picture behind it. */
+  .mhud-axis-cap .mhud-u { color: rgba(112,132,158,.85); }
+  /* The rail carries the render's own ramp, so it is a colour key as well as a
+     scale: the colour beside any height is the colour the tissue has at that
+     height in the picture. Script fills the gradient from the same three
+     stops. */
   .mhud-rail {
-    position: absolute; left: 30px; top: 0; bottom: 0; width: 1px;
-    background: linear-gradient(180deg,
-      rgba(150,208,252,.05), rgba(150,208,252,.42) 18%,
-      rgba(150,208,252,.42) 92%, rgba(150,208,252,.05));
-  }
-  /* the extent the reconstructed arbors actually cover, 321 to 1074 um. The
-     somata sit inside it, so the band says how much of the ladder is drawn. */
-  .mhud-extent {
-    position: absolute; left: 28px; width: 5px;
-    background: rgba(122,186,246,.12);
-    border-top: 1px solid rgba(150,208,252,.34);
-    border-bottom: 1px solid rgba(150,208,252,.34);
+    position: absolute; left: 55px; top: 0; bottom: 0; width: 2px;
+    opacity: .5; border-radius: 1px;
   }
   .mhud-tick {
-    position: absolute; left: 22px; width: 9px; height: 1px;
+    position: absolute; left: 42px; width: 9px; height: 1px;
     background: rgba(150,208,252,.45);
   }
   .mhud-tick b {
@@ -489,13 +485,13 @@
   /* one mark per located soma, at its own depth, in the colour the render
      gives that depth. Same three stops, same normalisation. */
   .mhud-soma {
-    position: absolute; left: 36px; width: 14px; height: 0; padding: 0;
+    position: absolute; left: 61px; width: 12px; height: 0; padding: 0;
     border: 0; border-top: 2px solid; background: none; cursor: pointer;
     transition: width .3s cubic-bezier(.2,.8,.25,1), opacity .3s ease;
-    opacity: .82;
+    opacity: .85;
   }
   .mhud-soma:hover, .mhud-soma:focus-visible,
-  .mhud-soma[aria-current="true"] { width: 24px; opacity: 1; }
+  .mhud-soma[aria-current="true"] { width: 20px; opacity: 1; }
   .mhud-soma:focus-visible { outline: 1px solid rgba(196,228,255,.8); outline-offset: 3px; }
 
   /* The cell readout, in the right gutter. It needs more room than the ladder,
@@ -559,10 +555,16 @@
     font-size: 12.5px;
   }
 
-  /* the depth histogram, inside the panel, so the phone keeps it too */
+  /* The depth histogram, in the side readout under the cell it is describing.
+     It reports these 34 somata and says so: they are the cells that happen to
+     have been proofread, not a sample of the volume, and the same bars in the
+     headline box read as a claim about cortex. */
+  .mhud-dist {
+    margin: 12px 0 0; padding: 10px 0 0;
+    border-top: 1px solid rgba(88,148,238,.22);
+  }
   .mhud-spark {
-    display: flex; align-items: flex-end; gap: 2px; height: 26px;
-    margin: 13px 0 0;
+    display: flex; align-items: flex-end; gap: 2px; height: 22px; margin: 0;
   }
   /* .mhud-bar, not a bare tag. These live inside .heropanel, whose corner tick
      rule claims every <i> in the subtree and would make each bar an absolutely
@@ -572,8 +574,8 @@
     align-self: flex-end;
   }
   .mhud-sparkcap {
-    margin: 6px 0 0; font-size: 9.5px; letter-spacing: .13em;
-    text-transform: uppercase; color: rgba(126,146,172,.95);
+    margin: 6px 0 0; font-size: 9px; letter-spacing: .12em;
+    text-transform: uppercase; color: rgba(126,146,172,.95); line-height: 1.5;
   }
   .mhud-sparkcap b { color: #CBD8E8; font-weight: 500; letter-spacing: .06em; }
   /* the provenance line. Where the numbers came from is part of the readout. */
@@ -835,8 +837,11 @@
       <!-- every number in this block is recomputed from the cell table on load,
            so the markup values are only what a reader with no script sees -->
       <p class="meta" id="mhudMeta"><span><b>38</b> cells</span><span><b>481</b> <span class="mhud-u">&micro;m</span> of cortex</span><span><b>34</b> located somata</span><span><b>809,115</b> <span class="mhud-u">&micro;m&sup2;</span> of membrane</span></p>
-      <div class="mhud-spark" id="mhudSpark" aria-hidden="true"></div>
-      <p class="mhud-sparkcap" id="mhudSparkCap"><b>34</b> somata by depth, <b>429</b> to <b>910</b> <span class="mhud-u">&micro;m</span> below the pia</p>
+      <!-- The depth histogram used to sit here. It does not belong in the
+           headline: these 38 are the cells that happen to be proofread, not a
+           sample of the volume, and a distribution in the title box reads as a
+           claim about cortex rather than about this handful. It lives in the
+           side readout now, next to the ladder it describes. -->
       <p class="mhud-prov">CAVE &middot; minnie65_phase3_v1 &middot; nuclei mat 1853 &middot; synapses and types mat 1855 &middot; 4&times;4&times;40 nm</p>
     </div>
   </div>
@@ -1406,41 +1411,51 @@
       "<span><b>" + fmt(membrane) + '</b> <span class="mhud-u">µm²</span> of membrane</span>';
   }
 
-  /* the depth histogram, 50 um bins over the located somata */
-  var spark = document.getElementById("mhudSpark");
-  if (spark) {
-    var B = 50, lo = Math.floor(dMin / B) * B, hi = Math.ceil(dMax / B) * B;
-    var bins = [], k;
-    for (k = lo; k < hi; k += B) bins.push(0);
-    depths.forEach(function (d) {
-      bins[Math.min(bins.length - 1, Math.floor((d - lo) / B))]++;
-    });
-    var top = Math.max.apply(null, bins);
-    spark.innerHTML = bins.map(function (n, i) {
-      return '<span class="mhud-bar" style="height:' + (n / top * 100).toFixed(1) +
-             '%;background:' + depthColour(lo + (i + 0.5) * B) + ';opacity:' +
+  /* the depth histogram, 50 um bins over the located somata. It is built here
+     but rendered inside the side readout, not in the headline panel. */
+  var B = 50, hLo = Math.floor(dMin / B) * B, hHi = Math.ceil(dMax / B) * B;
+  var bins = [], hk;
+  for (hk = hLo; hk < hHi; hk += B) bins.push(0);
+  depths.forEach(function (d) {
+    bins[Math.min(bins.length - 1, Math.floor((d - hLo) / B))]++;
+  });
+  var binTop = Math.max.apply(null, bins);
+  var distHTML =
+    '<div class="mhud-dist"><div class="mhud-spark" role="img" aria-label="' +
+    located.length + ' somata by depth in 50 micrometre bins">' +
+    bins.map(function (n, i) {
+      return '<span class="mhud-bar" style="height:' + (n / binTop * 100).toFixed(1) +
+             '%;background:' + depthColour(hLo + (i + 0.5) * B) + ';opacity:' +
              (n ? 0.92 : 0.16) + '"></span>';
-    }).join("");
-    var cap = document.getElementById("mhudSparkCap");
-    if (cap) {
-      cap.innerHTML = "<b>" + located.length + "</b> somata by depth, <b>" +
-        fmt(dMin, 0) + "</b> to <b>" + fmt(dMax, 0) +
-        '</b> <span class="mhud-u">µm</span> below the pia';
-    }
-  }
+    }).join("") + "</div>" +
+    '<p class="mhud-sparkcap">these <b>' + located.length + "</b> somata, <b>" +
+    fmt(dMin, 0) + "</b> to <b>" + fmt(dMax, 0) +
+    '</b> <span class="mhud-u">µm</span> deep</p></div>';
 
   /* ---- the ladder ---------------------------------------------------------
-     0 um at the pia to 1100 um, so a mark's height on the rail means the same
-     thing as a cell's height in the picture behind it. The band is the extent
-     the reconstructed arbors actually cover, which is wider than the somata. */
-  var AX = 1100;
-  function pc(d) { return (d / AX * 100).toFixed(2) + "%"; }
-  var html = '<p class="mhud-axis-cap">Depth below pia' +
+     Registered to the picture, not to a round number. The render paints every
+     vertex by its own depth through a known ramp, so the image can be asked
+     directly where a depth is rather than the answer being derived from the
+     camera: averaging the lit pixels of each row and inverting the ramp gives
+     depth = 0.634167 * y + 257.013 on the 1350px master, a fit whose weighted
+     RMS residual is 9.7 um across a 753 um range. In fractions of the image's
+     own height that is the two constants below. Script pins the ladder to the
+     image's box, so a mark sits at the height its cell sits at. */
+  var IMG_TOP_UM = 257.013, IMG_SPAN_UM = 856.125;
+  function pc(d) {
+    return ((d - IMG_TOP_UM) / IMG_SPAN_UM * 100).toFixed(3) + "%";
+  }
+  /* the rail is the ramp itself, sampled down the same span */
+  var stops = [];
+  for (var g = 0; g <= 10; g++) {
+    stops.push(depthColour(IMG_TOP_UM + IMG_SPAN_UM * (g / 10)) +
+               " " + (g * 10) + "%");
+  }
+  var html = '<p class="mhud-axis-cap">Depth below pia ' +
              '<span class="mhud-u">µm</span></p>' +
-             '<span class="mhud-rail"></span>' +
-             '<span class="mhud-extent" style="top:' + pc(D_LO) +
-             ';height:' + ((D_HI - D_LO) / AX * 100).toFixed(2) + '%"></span>';
-  for (var t = 0; t <= 1000; t += 200) {
+             '<span class="mhud-rail" style="background:linear-gradient(180deg,' +
+             stops.join(",") + ')"></span>';
+  for (var t = 400; t <= 1000; t += 200) {
     html += '<span class="mhud-tick" style="top:' + pc(t) + '"><b>' + t + '</b></span>';
   }
   located.forEach(function (c, i) {
@@ -1452,13 +1467,41 @@
   axis.innerHTML = html;
   var marks = [].slice.call(axis.querySelectorAll(".mhud-soma"));
 
-  /* ---- the readout the ladder drives -------------------------------------- */
+  /* Pin the ladder to the image rather than to the figure. The figure has a
+     minimum height, so on a narrow window the image is shorter than its
+     container and centred inside it; measuring the figure would put every
+     mark at the wrong height by exactly that slack. */
+  var heroImg = axis.parentNode.querySelector("img");
+  function placeAxis() {
+    if (!heroImg || !heroImg.offsetHeight) return;
+    axis.style.top = heroImg.offsetTop + "px";
+    axis.style.height = heroImg.offsetHeight + "px";
+  }
+  placeAxis();
+  if (heroImg) {
+    heroImg.addEventListener("load", placeAxis);
+    /* both, not one or the other. The observer catches the image being
+       relaid out without the window changing size, and the resize event
+       catches the case where the observer does not deliver, which is exactly
+       what a backgrounded tab does. A ladder pinned to a stale box puts every
+       mark at the wrong depth, which is worse than not drawing it. */
+    if (window.ResizeObserver) new ResizeObserver(placeAxis).observe(heroImg);
+    window.addEventListener("resize", placeAxis);
+    window.addEventListener("load", placeAxis);
+  }
+
+  /* ---- the readout the ladder drives --------------------------------------
+     The histogram is written once and left alone; only the body above it is
+     rebuilt as the manifest steps, so the distribution does not flicker every
+     couple of seconds under a panel that is otherwise changing. */
+  read.innerHTML = '<div class="mhud-cellbody"></div>' + distHTML;
+  var body = read.querySelector(".mhud-cellbody");
   var cur = -1;
   function show(i) {
     if (i === cur) return;
     cur = i;
     var c = located[i], col = depthColour(c[1]);
-    read.innerHTML =
+    body.innerHTML =
       '<p class="mhud-cell-top"><s class="mhud-chip" style="background:' + col +
       ';box-shadow:0 0 9px ' + col + '"></s>soma ' + (i + 1) + " / " +
       located.length + "</p>" +
